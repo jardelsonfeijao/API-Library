@@ -4,6 +4,9 @@ import com.example.libraryapi.model.Autor;
 import com.example.libraryapi.repository.AutorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class AutorService {
 
@@ -17,5 +20,8 @@ public class AutorService {
         autorRepository.save(autor);
     }
 
+    public Optional<Autor> obterPorId(UUID id) {
+        return autorRepository.findById(id);
+    }
 
 }

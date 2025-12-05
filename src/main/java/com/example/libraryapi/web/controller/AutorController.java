@@ -1,15 +1,16 @@
 package com.example.libraryapi.web.controller;
 
+import com.example.libraryapi.model.Autor;
 import com.example.libraryapi.service.AutorService;
 import com.example.libraryapi.web.dto.AutorDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.swing.text.html.Option;
 import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/autores")
@@ -36,5 +37,23 @@ public class AutorController {
 
 //        return new ResponseEntity("Autor salvo com sucesso! " + autorDTO + "", HttpStatus.CREATED);
         return ResponseEntity.created(location).build();
+    }
+
+
+    @GetMapping("{id}")
+    public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
+          var idAutor = UUID.fromString(id);
+          Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+          if (autorOptional.isPresent()) {
+              Autor autor = autorOptional.get();
+              AutorDTO autorDTO = new AutorDTO(
+                      autor.getId(),
+                      autor.getNome(),
+                      autor.getDataNascimento(),
+                      autor.getNacionalidade());
+              return ResponseEntity.ok(autorDTO);
+          } else {
+              return ResponseEntity.notFound().build();
+          }
     }
 }
