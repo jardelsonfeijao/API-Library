@@ -2,7 +2,6 @@ package com.example.libraryapi.web.controller;
 
 import com.example.libraryapi.service.AutorService;
 import com.example.libraryapi.web.dto.AutorDTO;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("api/autores")
@@ -30,7 +27,7 @@ public class AutorController {
         var autorEntidade = autorDTO.mapearParaAutor();
         autorService.salvarAutor(autorEntidade);
 
-        // http://localhost:8080/api/autores/ij9j9j0909j0j0j09j0j0j0j09jj0j0
+        // http://localhost:8080/api/autores/ij9j9j-0909j0j-0j09jj0-j0j09jj
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

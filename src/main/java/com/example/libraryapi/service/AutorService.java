@@ -9,12 +9,12 @@ public class AutorService {
 
     private final AutorRepository autorRepository;
 
-    public AutorService(AutorRepository autorRepository1) {
-        this.autorRepository = autorRepository1;
+    public AutorService(AutorRepository autorRepository) {
+        this.autorRepository = autorRepository;
     }
 
-    public Autor salvarAutor(Autor autor) {
-        return autorRepository.save(autor);
+    public void salvarAutor(Autor autor) {
+        autorRepository.save(autor);
     }
 
 
