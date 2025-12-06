@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.swing.text.html.Option;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("api/autores")
@@ -25,6 +27,7 @@ public class AutorController {
 
     @PostMapping
     public ResponseEntity<Void> salvar(@RequestBody AutorDTO autorDTO) {
+
         var autorEntidade = autorDTO.mapearParaAutor();
         autorService.salvarAutor(autorEntidade);
 
@@ -42,8 +45,10 @@ public class AutorController {
 
     @GetMapping("{id}")
     public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
+
           var idAutor = UUID.fromString(id);
           Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+
           if (autorOptional.isPresent()) {
               Autor autor = autorOptional.get();
               AutorDTO autorDTO = new AutorDTO(
@@ -59,12 +64,34 @@ public class AutorController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deletar(@PathVariable("id") String id) {
+
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+
         if (autorOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         autorService.deletarAutor(autorOptional.get());
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public ResponseEntity<List<AutorDTO>> pesquisarAutor(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
+
+        List<Autor> resultado = autorService.pesquisar(nome, nacionalidade);
+        List<AutorDTO> lista = resultado
+                .stream()
+                .map(autor -> new AutorDTO(
+                        autor.getId(),
+                        autor.getNome(),
+                        autor.getDataNascimento(),
+                        autor.getNacionalidade())
+                ).collect(Collectors.toList());
+
+        return ResponseEntity.ok(lista);
+    }
+
 }
