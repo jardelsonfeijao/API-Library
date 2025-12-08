@@ -17,11 +17,16 @@ public class AutorService {
         this.autorRepository = autorRepository;
     }
 
-    public void salvarAutor(Autor autor) {
+    public Autor salvarAutor(Autor autor) { return autorRepository.save(autor); }
+
+    public void atualizarAutor(Autor autor) {
+        if (autor.getId() == null) {
+            throw new IllegalArgumentException("Para atualizar é necessario que o autor ja esteja salvo na base");
+        }
         autorRepository.save(autor);
     }
 
-    public Optional<Autor> obterPorId(UUID id) {
+    public Optional<Autor> obterAutorPorId(UUID id) {
         return autorRepository.findById(id);
     }
 
@@ -29,7 +34,7 @@ public class AutorService {
         autorRepository.delete(autor);
     }
 
-    public List<Autor> pesquisar(String nome, String nacionalidade) {
+    public List<Autor> pesquisarAutor(String nome, String nacionalidade) {
         if (nome != null & nacionalidade != null) {
             return autorRepository.findByNomeAndNacionalidade(nome, nacionalidade);
         }

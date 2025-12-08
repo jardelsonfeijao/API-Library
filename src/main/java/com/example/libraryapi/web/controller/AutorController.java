@@ -47,7 +47,7 @@ public class AutorController {
     public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
 
           var idAutor = UUID.fromString(id);
-          Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+          Optional<Autor> autorOptional = autorService.obterAutorPorId(idAutor);
 
           if (autorOptional.isPresent()) {
               Autor autor = autorOptional.get();
@@ -66,7 +66,7 @@ public class AutorController {
     public ResponseEntity<Void> deletar(@PathVariable("id") String id) {
 
         var idAutor = UUID.fromString(id);
-        Optional<Autor> autorOptional = autorService.obterPorId(idAutor);
+        Optional<Autor> autorOptional = autorService.obterAutorPorId(idAutor);
 
         if (autorOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -77,11 +77,11 @@ public class AutorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AutorDTO>> pesquisarAutor(
+    public ResponseEntity<List<AutorDTO>> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
 
-        List<Autor> resultado = autorService.pesquisar(nome, nacionalidade);
+        List<Autor> resultado = autorService.pesquisarAutor(nome, nacionalidade);
         List<AutorDTO> lista = resultado
                 .stream()
                 .map(autor -> new AutorDTO(
@@ -92,6 +92,28 @@ public class AutorController {
                 ).collect(Collectors.toList());
 
         return ResponseEntity.ok(lista);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> atualizar(
+            @PathVariable("id") String id,
+            @RequestBody AutorDTO autorDTO) {
+
+        var idAutor = UUID.fromString(id);
+        Optional<Autor> autorOptional = autorService.obterAutorPorId(idAutor);
+
+        if (autorOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var autor = autorOptional.get();
+        autor.setNome(autorDTO.nome());
+        autor.setNacionalidade(autorDTO.nacionalidade());
+        autor.setDataNascimento(autorDTO.dataNascimento());
+
+        autorService.atualizarAutor(autor);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
