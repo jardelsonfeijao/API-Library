@@ -6,7 +6,7 @@ API RESTful desenvolvida para gerenciamento de recursos de uma biblioteca, aplic
 
 ## 📌 Sobre o projeto
 
-Este projeto foi desenvolvido acompanhando o curso **Profissionalize-se em Java com Spring Boot (Atualizado 2025)**, seguindo rigorosamente padrões modernos de API REST, estruturação de camadas e qualidade no código.
+Este projeto foi desenvolvido seguindo rigorosamente padrões modernos de API REST, estruturação de camadas e qualidade no código.
 
 Até o momento, o projeto contempla:
 
@@ -41,53 +41,14 @@ Este repositório serve como um portfólio técnico, demonstrando domínio de Ja
 ## 🗂 Arquitetura do projeto
 
 ```
-src/main/java
-└── com.example.libraryapi
-    ├── domain        // Entidades da aplicação
-    │   └── Autor.java
-    ├── dto           // Objetos de transferência (requests/responses)
-    ├── mapper        // Conversão entre entidades e DTOs
-    ├── repository    // Interfaces Spring Data JPA
-    ├── service       // Regras de negócio
-    │   └── AutorService.java
-    ├── controller    // Endpoints REST
-    │   └── AutorController.java
-    └── config        // Configurações da aplicação
+
 ```
 
 Essa arquitetura reflete separação de responsabilidades, facilitando manutenção, testes e escalabilidade.
 
 ---
 
-## ✨ Funcionalidades (até o momento)
 
-### ✅ Autor
-- Criar novo Autor → `POST /autores`
-- Validações de campos obrigatórios
-- Conversão automática entre DTO e entidade
-- Persistência via JPA/Hibernate
-- Retorno padronizado para a API
-
----
-
-## 📥 Exemplo de requisição (POST /autores)
-
-```json
-{
-  "nome": "Machado de Assis"
-}
-```
-
-### ✔️ Resposta esperada
-
-```json
-{
-  "id": 1,
-  "nome": "Machado de Assis"
-}
-```
-
----
 
 ## 🚀 Como executar o projeto
 

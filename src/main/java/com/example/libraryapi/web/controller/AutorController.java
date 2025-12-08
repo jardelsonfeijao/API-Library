@@ -3,6 +3,7 @@ package com.example.libraryapi.web.controller;
 import com.example.libraryapi.model.Autor;
 import com.example.libraryapi.service.AutorService;
 import com.example.libraryapi.web.dto.AutorDTO;
+import com.example.libraryapi.web.dto.ErroResposta;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,6 +40,9 @@ public class AutorController {
                 .toUri();
 
 //        return new ResponseEntity("Autor salvo com sucesso! " + autorDTO + "", HttpStatus.CREATED);
+
+        ErroResposta erroResposta = ErroResposta.erroRespostaConflito("Autor já cadastrado!");
+        return ResponseEntity.status(erroResposta.status()).build(erroResposta);
         return ResponseEntity.created(location).build();
     }
 
