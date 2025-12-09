@@ -2,7 +2,6 @@ package com.example.libraryapi.web.dto;
 
 import org.springframework.http.HttpStatus;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 
 public record ErroResposta(int status, String mensagem, List<ErroCampo> erros) {

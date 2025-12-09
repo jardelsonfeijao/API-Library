@@ -6,7 +6,6 @@ import com.example.libraryapi.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Repeat;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -14,7 +13,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class LivroReposiroryTest {
@@ -35,7 +33,7 @@ class LivroReposiroryTest {
         livro.setTitulo("UFO");
         livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
 
-        Autor autor = autorRepository.findById(UUID.fromString("cf66d359-ace1-4c32-a51d-22da5e50c13c")).orElse(null);
+        Autor autor = autorRepository.findById(UUID.fromString("dce15827-4eb1-4afe-aa67-f9a73ac2cb35")).orElse(null);
         livro.setAutor(autor);
 
         livro.setAutor(new Autor());
