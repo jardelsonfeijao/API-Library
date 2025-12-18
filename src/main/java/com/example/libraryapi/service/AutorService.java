@@ -5,6 +5,9 @@ import com.example.libraryapi.model.Autor;
 import com.example.libraryapi.repository.AutorRepository;
 import com.example.libraryapi.repository.LivroReposirory;
 import com.example.libraryapi.validator.AutorValidator;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,17 +15,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AutorService {
 
     private final AutorRepository autorRepository;
     private final AutorValidator autorValidator;
     private final LivroReposirory livroReposirory;
-
-    public AutorService(AutorRepository autorRepository, AutorValidator autorValidator, LivroReposirory livroReposirory) {
-        this.autorRepository = autorRepository;
-        this.autorValidator = autorValidator;
-        this.livroReposirory = livroReposirory;
-    }
 
     public Autor salvarAutor(Autor autor) {
         autorValidator.validar(autor);
@@ -62,6 +60,21 @@ public class AutorService {
         }
 
         return autorRepository.findAll();
+    }
+
+    public List<Autor> pesquisaByExample(String nome, String nacionalidade) {
+        var autor = new Autor();
+        autor.setNome(nome);
+        autor.setNacionalidade(nacionalidade);
+
+        ExampleMatcher exampleMatcher = ExampleMatcher
+                .matching()
+                .withIgnorePaths("id", "dataNascimento", "dataCadastro")
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Autor> autorExample = Example.of(autor, exampleMatcher);
+        return autorRepository.findAll(autorExample);
     }
 
     public boolean possuiLivro(Autor autor) {

@@ -6,6 +6,8 @@ import com.example.libraryapi.model.Autor;
 import com.example.libraryapi.service.AutorService;
 import com.example.libraryapi.web.dto.AutorDTO;
 import com.example.libraryapi.web.dto.ErroResposta;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,16 +22,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/autores")
 // http://localhost:8080/api/autores
+@RequiredArgsConstructor
 public class AutorController {
 
     private final AutorService autorService;
 
-    public AutorController(AutorService autorService) {
-        this.autorService = autorService;
-    }
-
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody AutorDTO autorDTO) {
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autorDTO) {
         try {
             var autorEntidade = autorDTO.mapearParaAutor();
             autorService.salvarAutor(autorEntidade);
@@ -96,7 +95,7 @@ public class AutorController {
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
 
-        List<Autor> resultado = autorService.pesquisarAutor(nome, nacionalidade);
+        List<Autor> resultado = autorService.pesquisaByExample(nome, nacionalidade);
         List<AutorDTO> lista = resultado
                 .stream()
                 .map(autor -> new AutorDTO(
